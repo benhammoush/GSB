@@ -329,8 +329,8 @@ class PdoGsb{
         PdoGsb::$monPdo->exec($req);
     }
     
-    public function getMoisSuivant($UneAnnee, $lemois, $id) {
-        $req = "update lignefraishorsforfait set mois = '$MoisPlus' where id='1' "; 
+    public function getMoisSuivant($MoisPlus, $visiteur, $id) {
+        $req = "update lignefraishorsforfait set mois = '$MoisPlus' where id='$id' "; 
         
         PdoGsb::$monPdo->exec($req);
     }

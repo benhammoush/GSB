@@ -240,13 +240,13 @@ function getSixDerniersMois(){
     return $tabMois;
 }
 
-function getMoisNext($UneAnnee, $lemois) {
-    $lemois++;
-    if ($lemois < 10) {
-        $lemois = "0" . $lemois;
+function getMoisNext($UneAnnee, $numMois) {
+    $numMois++;
+    if ($numMois < 10) {
+        $numMois = "0" . $numMois;
     }
-    if ($lemois > 13) {
+    if ($numMois > 12) {
         $UneAnnee++;
-        $lemois = "01";
-    }return $UneAnnee . $lemois;
+        $numMois = "01";
+    }return $UneAnnee . $numMois;
 }

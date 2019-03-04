@@ -5,14 +5,21 @@
             Etat : <?php echo $libEtat?> depuis le <?php echo $dateModif?> <br> Montant validé : <?php echo $montantValide?>      
             
         </p>
+        <form method="POST" action="index.php?uc=validerFrais&action=Modifier">
+            
+            <input id="leMois" name="leMois" type="hidden" value="<?php echo $leMois; ?>">
+            <input id="visiteur" name="visiteurtest" type="hidden" value="<?php echo $visiteurtest; ?>">
+           
+
         <table class="listeLegere">
            <caption>Eléments forfaitisés </caption>
             <tr>
                 <?php
+
                 foreach ( $lesFraisForfait as $unFraisForfait ) {
                     $libelle = $unFraisForfait['libelle'];
                     ?>	
-                    <th> <?php echo $libelle?></th>
+                    <th> <?php echo $libelle ?></th>
                     <?php
                 }
                 ?>
@@ -21,20 +28,20 @@
                 <?php
                 foreach (  $lesFraisForfait as $unFraisForfait  ) {
                     $quantite = $unFraisForfait['quantite'];
+                    $libelle = $unFraisForfait['libelle'];
+                    $idfrais = $unFraisForfait['idfrais'];
                     ?>
-                    <td class="qteForfait"><?php echo $quantite?> </td>
-                    <?php
+                <td class="qteForfait"><input type="text" size="10" maxlength="5" name="lesFrais[<?php echo $idfrais; ?>]" value=" <?php echo $quantite?> " </td>
+                    
+                        <?php
                 }
-                ?>
+                ?> <td><input type="submit" value="Modifier"><td>    
             </tr>
         </table>
-        
-        <div class="piedForm">
-            <p>
-                <input id="ok" type="submit" value="Valider" size="20" />
-                <input id="annuler" type="reset" value="Effacer" size="20" />
-            </p> 
-        </div>
+        </form>
+       
+            
+      
 
         <table class="listeLegere">
             <caption>Descriptif des éléments hors forfait -<?php echo $nbJustificatifs ?> justificatifs reçus -</caption>
@@ -52,13 +59,16 @@
                 $date = $unFraisHorsForfait['date'];
                 $libelle = $unFraisHorsForfait['libelle'];
                 $montant = $unFraisHorsForfait['montant'];
+                $leMois = $unFraisHorsForfait['mois'];
+                $idVisiteur = $unFraisHorsForfait['idVisiteur'];
+                
                 ?>
                 <tr>
                     <td><?php echo $date ?></td>
                     <td><?php echo $libelle ?></td>
                     <td><?php echo $montant ?></td>
                     <td><a href="index.php?uc=validerFrais&action=supprimer&id=<?php echo $id;?>">Supprimer</a></td>
-                    <td><a href="index.php?uc=validerFrais&action=reporter&id=<?php echo $id;?>">Reporter</a></td>
+                    <td><a href="index.php?uc=validerFrais&action=reporter&id=<?php echo $id?>&idVisiteur=<?php echo $idVisiteur?>&leMois=<?php echo $leMois?>">Reporter</a></td>
             </tr>
                 <?php 
             }
