@@ -27,9 +27,8 @@ switch($action) {
         $lesMois = getSixDerniersMois();
         $moisASelectionner = $lesMois;
         $visiteursASelectionner = $visiteur;
-        
         $visiteur = strval($visiteur);
-        
+        $visiteurtest = $visiteur;
         $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($visiteur,$leMois);
         $lesFraisForfait= $pdo->getLesFraisForfait($visiteur,$leMois);
         $lesInfosFicheFrais = $pdo->getLesInfosFicheFrais($visiteur,$leMois);
@@ -40,6 +39,7 @@ switch($action) {
         $nbJustificatifs = $lesInfosFicheFrais['nbJustificatifs'];
         $dateModif =  $lesInfosFicheFrais['dateModif'];
         $dateModif =  dateAnglaisVersFrancais($dateModif);
+         
         include("vues/v_selectionnerVisiteurEtMois.php");
         include("vues/v_fraisDuVisiteur.php");
         break;
@@ -52,9 +52,48 @@ switch($action) {
         }
 
     case 'reporter': {
-            $id = $_REQUEST['id'];
-            $MoisPlus = getMoisNext($numAnnee, substr($_SESSION['lstMois'], 4, 2)); // appel de la fonction qui ajoute 1 au mois
-            $pdo->getMoisSuivant($Uneannee, $lemois, $id);
+        
+        
+        $leMois = $_REQUEST['leMois'];
+        $id = $_REQUEST['id'];
+        $visiteur = $_REQUEST['idVisiteur'];
+       
+        $visiteurs = $pdo->afficherVisiteurs();
+        $lesMois = getSixDerniersMois();
+        
+        $moisASelectionner = $lesMois;
+        $visiteursASelectionner = $visiteur;
+          
+        $visiteur = strval($visiteur);
+        
+        $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($visiteur,$leMois);
+        $lesFraisForfait= $pdo->getLesFraisForfait($visiteur,$leMois);
+        $lesInfosFicheFrais = $pdo->getLesInfosFicheFrais($visiteur,$leMois);
+        $numAnnee =substr( $leMois,0,4);
+        $numMois =substr( $leMois,4,2);
+        $libEtat = $lesInfosFicheFrais['libEtat'];
+        $montantValide = $lesInfosFicheFrais['montantValide'];
+        $nbJustificatifs = $lesInfosFicheFrais['nbJustificatifs'];
+        $dateModif =  $lesInfosFicheFrais['dateModif'];
+        $dateModif =  dateAnglaisVersFrancais($dateModif);
+        
+         $MoisPlus = getMoisNext($numAnnee, $numMois); // appel de la fonction qui ajoute 1 au mois
+         $pdo->getMoisSuivant($MoisPlus, $visiteur, $id);
+        
+        include("vues/v_selectionnerVisiteurEtMois.php");
+        include("vues/v_fraisDuVisiteur.php");
+        break;
+        }
+        
+        case 'Modifier': {
+            $lesFrais = $_REQUEST['lesFrais'];
+            $leMois = $_REQUEST['leMois'];
+            $visiteur = $_REQUEST['visiteurtest'];
+
+            
+            $pdo->majFraisForfait($visiteur, $leMois, $lesFrais);
+            
+            
             break;
         }
 }
